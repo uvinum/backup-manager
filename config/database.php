@@ -10,6 +10,7 @@ return [
         'database' => 'test',
         'singleTransaction' => false,
         'ignoreTables' => [],
+        'extra_params' => []
     ],
     'production' => [
         'type' => 'postgresql',

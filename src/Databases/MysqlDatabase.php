@@ -40,8 +40,12 @@ class MysqlDatabase implements Database {
         if (array_key_exists('ssl', $this->config) && $this->config['ssl'] === true) {
     		$extras[] = '--ssl';
     	}
+
+    	$extras = array_merge($extras, $this->addExtraParamsFromConfig());
+
     	$command = 'mysqldump --routines '.implode(' ', $extras).' --host=%s --port=%s --user=%s --password=%s %s > %s';
-        return sprintf($command,
+
+    	return sprintf($command,
             escapeshellarg($this->config['host']),
             escapeshellarg($this->config['port']),
             escapeshellarg($this->config['user']),
@@ -49,6 +53,28 @@ class MysqlDatabase implements Database {
             escapeshellarg($this->config['database']),
             escapeshellarg($outputPath)
         );
+    }
+
+    private function addExtraParamsFromConfig()
+    {
+        if (!isset($this->config['extra_params']) || !is_array($this->config['extra_params'])) {
+            return [];
+        }
+
+        $extraParams = [];
+
+        foreach ($this->config['extra_params'] as $param => $value) {
+            $no_value_param = is_numeric($param);
+
+            if ($no_value_param) {
+                $extraParams[] = '--' . $value;
+                continue;
+            }
+
+            $extraParams[] = '--' . $param . '=\'' . $value . '\'';
+        }
+
+        return $extraParams;
     }
 
     /**
@@ -90,7 +116,7 @@ class MysqlDatabase implements Database {
                 escapeshellarg($ignoreTable)
             );
         }
-        
+
         return implode(' ',$commands);
     }
 }
