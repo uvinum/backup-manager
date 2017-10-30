@@ -40,8 +40,13 @@ class MysqlDatabase implements Database {
         if (array_key_exists('ssl', $this->config) && $this->config['ssl'] === true) {
     		$extras[] = '--ssl';
     	}
+    	if (array_key_exists('verbose', $this->config) && $this->config['verbose'] === true) {
+    		$extras[] = '--verbose';
+    	}
+
     	$command = 'mysqldump --routines '.implode(' ', $extras).' --host=%s --port=%s --user=%s --password=%s %s > %s';
-        return sprintf($command,
+
+    	return sprintf($command,
             escapeshellarg($this->config['host']),
             escapeshellarg($this->config['port']),
             escapeshellarg($this->config['user']),
@@ -90,7 +95,7 @@ class MysqlDatabase implements Database {
                 escapeshellarg($ignoreTable)
             );
         }
-        
+
         return implode(' ',$commands);
     }
 }
