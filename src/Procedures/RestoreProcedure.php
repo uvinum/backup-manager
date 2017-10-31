@@ -13,6 +13,7 @@ class RestoreProcedure extends Procedure {
      * @param string $sourcePath
      * @param string $databaseName
      * @param null $compression
+     * @return array
      * @throws \BackupManager\Filesystems\FilesystemTypeNotSupported
      * @throws \BackupManager\Config\ConfigFieldNotFound
      * @throws \BackupManager\Compressors\CompressorTypeNotSupported
@@ -54,6 +55,6 @@ class RestoreProcedure extends Procedure {
             basename($workingFile)
         ));
 
-        $sequence->execute();
+        return $sequence->execute();
     }
 } 

@@ -12,6 +12,7 @@ class BackupProcedure extends Procedure {
      * @param string $database
      * @param \BackupManager\Filesystems\Destination[] $destinations
      * @param string $compression
+     * @return array
      * @throws \BackupManager\Filesystems\FilesystemTypeNotSupported
      * @throws \BackupManager\Config\ConfigFieldNotFound
      * @throws \BackupManager\Compressors\CompressorTypeNotSupported
@@ -56,6 +57,6 @@ class BackupProcedure extends Procedure {
             basename($workingFile)
         ));
 
-        $sequence->execute();
+        return $sequence->execute();
     }
 }

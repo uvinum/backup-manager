@@ -20,6 +20,7 @@ class ShellProcessor {
 
     /**
      * @param $command
+     * @return string|void
      * @throws ShellProcessFailed
      * @throws \Symfony\Component\Process\Exception\LogicException
      */
@@ -34,5 +35,7 @@ class ShellProcessor {
         if ( ! $this->process->isSuccessful()) {
             throw new ShellProcessFailed($this->process->getErrorOutput());
         }
+
+        return $this->process->getErrorOutput();
     }
 }

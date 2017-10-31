@@ -20,11 +20,14 @@ class Sequence {
 
     /**
      * Run the procedure.
-     * @return void
+     * @return array
      */
     public function execute() {
-        foreach ($this->tasks as $task) {
-            $task->execute();
+        $output = [];
+        foreach ($this->tasks as $key => $task) {
+            $output[$key]['task'] = get_class($task);
+            $output[$key]['output'] = $task->execute();
         }
+        return $output;
     }
 }
